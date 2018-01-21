@@ -10,4 +10,10 @@ public class Controller {
     public String get() {
         return String.valueOf(System.currentTimeMillis());
     }
+
+    @GetMapping("css/backdoor")
+    public String cssBackdoor() {
+        //  "/css/**", "/js/**", "/images/**", "/webjars/**", "/**/favicon.ico", "/error"
+        return "If url matches any of these patterns, it's not secured with basic configuration";
+    }
 }
