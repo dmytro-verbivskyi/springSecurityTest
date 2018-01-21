@@ -8,7 +8,7 @@ public class Controller {
 
     @GetMapping
     public String get() {
-        return String.valueOf(System.currentTimeMillis());
+        return "root GET: " + System.currentTimeMillis();
     }
 
     @GetMapping("css/backdoor")

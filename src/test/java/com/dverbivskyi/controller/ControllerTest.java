@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.containsString;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -45,14 +46,16 @@ public class ControllerTest {
     public void authorizedUserCanGetResource() throws Exception {
         given().auth().preemptive().basic("validUser", "secret")
                 .when().get("/")
-                .then().statusCode(HttpStatus.OK.value());
+                .then().statusCode(HttpStatus.OK.value())
+                .content(containsString("root GET: "));
     }
 
     @Test
     public void someUrlsAreNotSecuredByDefaultSSConfiguration() throws Exception {
         //  "/css/**", "/js/**", "/images/**", "/webjars/**", "/**/favicon.ico", "/error"
         when().get("css/backdoor")
-                .then().statusCode(HttpStatus.OK.value());
+                .then().statusCode(HttpStatus.OK.value())
+                .content(containsString("If url matches any of these patterns, it's not secured with basic configuration"));
     }
 
     //0 = {org.springframework.security.web.util.matcher.AntPathRequestMatcher@6579} "Ant [pattern='/css/**']"
